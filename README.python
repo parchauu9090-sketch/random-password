@@ -1,0 +1,73 @@
+import random
+import tkinter as tk
+from tkinter import messagebox
+
+
+letters = ['a','b','c','d','e','f','g','h','i','j','k',
+           'l','m','n','o','p','q','r','s','t','u',
+           'v','w','x','y','z','A','B','C','D','E',
+           'F','G','H','I','J','K','L','M','N','O',
+           'P','Q','R','S','T','U','V','W','X','Y','Z']
+
+numbers = ['0','1','2','3','4','5','6','7','8','9']
+symbols = ['!','@','#','$','%','&','*','+','/','?']
+
+
+def generate_password():
+    try:
+        n_letters = int(entry_letters.get())
+        n_numbers = int(entry_numbers.get())
+        n_symbols = int(entry_symbols.get())
+    except ValueError:
+        messagebox.showerror("Invalid input", "Please enter valid numbers.")
+        return
+
+    password_list = []
+
+    for _ in range(n_letters):
+        password_list.append(random.choice(letters))
+    for _ in range(n_symbols):
+        password_list.append(random.choice(symbols))
+    for _ in range(n_numbers):
+        password_list.append(random.choice(numbers))
+
+    random.shuffle(password_list)
+
+    password = "".join(password_list)
+    entry_result.delete(0, tk.END)
+    entry_result.insert(0, password)
+
+
+root = tk.Tk()
+root.title("Password Generator")
+root.geometry("350x300")
+root.resizable(False, False)
+
+
+tk.Label(root, text="🔐 Password Generator", font=("Arial", 16, "bold")).pack(pady=10)
+
+
+frame = tk.Frame(root)
+frame.pack(pady=5)
+
+tk.Label(frame, text="Number of Letters:").grid(row=0, column=0, padx=5, pady=5)
+entry_letters = tk.Entry(frame, width=10)
+entry_letters.grid(row=0, column=1)
+
+tk.Label(frame, text="Number of Numbers:").grid(row=1, column=0, padx=5, pady=5)
+entry_numbers = tk.Entry(frame, width=10)
+entry_numbers.grid(row=1, column=1)
+
+tk.Label(frame, text="Number of Symbols:").grid(row=2, column=0, padx=5, pady=5)
+entry_symbols = tk.Entry(frame, width=10)
+entry_symbols.grid(row=2, column=1)
+
+
+tk.Button(root, text="Generate Password", command=generate_password, bg="#4CAF50", fg="white", font=("Arial", 12, "bold")).pack(pady=15)
+
+
+entry_result = tk.Entry(root, width=40, font=("Arial", 12))
+entry_result.pack(pady=10)
+
+
+root.mainloop()
